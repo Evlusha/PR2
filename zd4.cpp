@@ -4,31 +4,34 @@
 #include <vector>
 
 using namespace std;
+// нахождение НОД(a, b) для проверки, являются ли числа взаимопростыми
+int VzaimProst(int a, int b) { 
 
-int VzaimProst(int a, int b) { // нахождение НОД(a, b) для проверки, являются ли числа взаимопростыми
-    
     if (b == 0) return a;
-    
+
     return VzaimProst(b, a % b);
 }
+// проверка, является ли число простым
+bool CheckPrime(int p) { 
 
-bool CheckPrime(int p) { // проверка, является ли число простым
-
-    if (p <= 1) return false; 
-    for (int i = 2; i * i <= p; ++i) { 
+    if (p <= 1) return false;
+    for (int i = 2; i * i <= p; ++i) 
+    {
         if (p % i == 0) return false;
     }
 
     return true;
 }
-
-int fi(int num) { // функция Эйлера
+ // функция Эйлера
+int fi(int num) {
 
     int result = 1;
     int stepen = 0;
 
-    for (int i = 2; i <= num; ++i) {
-        while (num % i == 0) {
+    for (int i = 2; i <= num; ++i)
+    {
+        while (num % i == 0) 
+        {
             stepen++;
             num /= i;
         }
@@ -40,30 +43,35 @@ int fi(int num) { // функция Эйлера
 
     return result;
 }
-
-int Pow(int a, int x, int p) { // нахождение остатка от числа в степени
+// нахождение остатка от числа в степени
+int Pow(int a, int x, int p) 
+{ 
 
     int result = 1;
 
-    if (CheckPrime(p) == true) { // простое
-        x %= p-1;
-    } else { // не простое
-        x %= fi(p);     
+    if (CheckPrime(p) == true) 
+    { // простое
+        x %= p - 1;
+    }
+    else { // не простое
+        x %= fi(p);
     }
     for (int i = 1; i <= x; ++i) {
         result = (result * a) % p;
     }
-    
+
     return result;
 }
+// Алгоритм нахождения числа d(c^-1 mod m)
+int inversia(int c, int m) 
+{ 
 
-int inversia(int c, int m) { // Алгоритм нахождения числа d(c^-1 mod m)
-
-    int q; 
-    vector<int> one = {m, 0};
-    vector<int> two = {c, 1};
+    int q;
+    vector<int> one = { m, 0 };
+    vector<int> two = { c, 1 };
     vector<int> three(2);
-    while (two[0] != 0) {
+    while (two[0] != 0) 
+    {
         q = one[0] / two[0];
         three[0] = one[0] % two[0];
         three[1] = one[1] - (q * two[1]);
@@ -71,7 +79,8 @@ int inversia(int c, int m) { // Алгоритм нахождения числа
         two[0] = three[0]; two[1] = three[1];
     }
 
-    if (one[1] < 0) {
+    if (one[1] < 0) 
+    {
         one[1] += m;
     }
 
@@ -79,7 +88,7 @@ int inversia(int c, int m) { // Алгоритм нахождения числа
 }
 
 
-int main(){
+int main() {
     setlocale(LC_ALL, "Rus");
     srand(time(0));
 
@@ -96,8 +105,9 @@ int main(){
     cout << "k = " << k << endl;
 
     int y = 100 + rand() % 100000; // абонент B выбирает случайное больше число
-    while (VzaimProst(y, n-1) != 1) {
-        y = 100 + rand() % 100000;  
+    while (VzaimProst(y, n - 1) != 1) 
+    {
+        y = 100 + rand() % 100000;
     }
     cout << "y = " << y << endl;
 
@@ -107,25 +117,30 @@ int main(){
     int X = Pow(Y, x, n); // абонент А посылает абоненту B
     cout << "X = " << X << endl;
 
-    int z = inversia(y, n-1); // абонент B вычисляет
+    int z = inversia(y, n - 1); // абонент B вычисляет
     cout << "z = " << z << endl;
     int ksh = Pow(X, z, n);
     cout << "k' = " << ksh << endl;
 
-    if (k == ksh) {
+    if (k == ksh) 
+    {
         int key = k;
-        
-        for (int i = 0; i < message.length(); ++i) {
+
+        for (int i = 0; i < message.length(); ++i) 
+        {
             message[i] = message[i] ^ key;
         }
         cout << "Зашифрованное сообщение: " << message << endl;
-        
-        for (int i = 0; i < message.length(); ++i) {
+
+        for (int i = 0; i < message.length(); ++i) 
+        {
             message[i] = message[i] ^ key;
         }
-        cout << "Расшифрованное сообщение: " << message;   
-         
-    } else {
+        cout << "Расшифрованное сообщение: " << message;
+
+    }
+    else 
+    {
         cout << "Ключи не равны!";
     }
 
